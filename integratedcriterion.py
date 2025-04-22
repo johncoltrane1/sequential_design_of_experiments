@@ -105,7 +105,7 @@ class IntegratedCriterion(SequentialPrediction):
 
         dcrit = gnp.jax.jit(gnp.grad(crit_jit))
 
-        box = self.computer_experiments_problem.input_box
+        box = self.input_box
         assert all([len(_v) == len(box[0]) for _v in box])
 
         bounds = [tuple(box[i][k] for i in range(len(box))) for k in range(len(box[0]))]
