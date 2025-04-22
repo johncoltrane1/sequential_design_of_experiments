@@ -25,6 +25,9 @@ class IntegratedCriterion(SequentialPrediction):
         self.xi = xi
         self.zi = zi
 
+        # estimate model parameters
+        self.update_params()
+
         # search space
         self.smc = self.init_smc()
 
