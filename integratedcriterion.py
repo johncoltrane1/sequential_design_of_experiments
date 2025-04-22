@@ -50,7 +50,7 @@ class IntegratedCriterion(SequentialPrediction):
         return target
 
     def boxify_criterion(self, x):
-        input_box = gnp.asarray(self.computer_experiments_problem.input_box)
+        input_box = gnp.asarray(self.input_box)
         b = sampcrit.isinbox(input_box, x)
 
         res = self.criterion(x).flatten()
