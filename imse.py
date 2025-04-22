@@ -16,13 +16,20 @@ class IMSE(IntegratedCriterion):
 
     def build_criterion(self):
         def criterion(x):
-            assert x.ndim == 1 and x.shape[0] % self.xi.shape[1] == 0
+            assert 1 <= x.ndim <= 2
+            if x.ndim == 2:
+                res = []
+                for i in range(x.shape[0]):
+                    res.append(criterion(x[i, :]))
+                return gnp.vstack(res)
+
+            assert x.shape[0] % self.xi.shape[1] == 0
 
             x_array = x.reshape(-1, self.xi.shape[1])
             z_array = gnp.zeros([x_array.shape[0]])
 
-            xi_augmented = gnp.vstack((self.xi, x_array))
-            zi_augmented = gnp.vstack((self.zi, z_array)).reshape(-1, 1)
+            xi_augmented = gnp.vstack((gnp.asarray(self.xi), x_array))
+            zi_augmented = gnp.concatenate((gnp.asarray(self.zi), z_array)).reshape(-1, 1)
 
             _, zpv = self.model.predict(xi_augmented, zi_augmented, self.grid, convert_out=False)
             value = - zpv.mean()

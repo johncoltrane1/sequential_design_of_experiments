@@ -27,3 +27,5 @@ zi = (xi ** 2).ravel()
 grid = np.random.uniform(size=n_grid).reshape(-1, 1)
 
 algo = imse.IMSE(10, grid, input_box, n_particles, xi, zi, model)
+
+algo.step()
