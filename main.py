@@ -32,7 +32,7 @@ grid = np.random.uniform(size=n_grid).reshape(-1, 1)
 
 algo = imse.IMSE(1, grid, input_box, n_particles, xi, zi, model)
 
-for _ in range(N_runs):
+for _ in range(n_runs):
     criterion_values = - algo.criterion(x_test)
     current_criterion = algo.model.predict(algo.xi, algo.zi, grid)[1].mean()
 
