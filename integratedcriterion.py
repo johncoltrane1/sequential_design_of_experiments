@@ -37,6 +37,9 @@ class IntegratedCriterion(SequentialPrediction):
         # criterion
         self.criterion = self.build_criterion()
 
+        # run smc
+        self.update_search_space()
+
     def init_smc(self):
         return SMC(box=self.input_box, n=self.n_particles)
 

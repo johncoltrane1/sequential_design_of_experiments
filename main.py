@@ -24,8 +24,19 @@ model = gpc.Model_ConstantMeanMaternpML(
 xi = 10 * np.random.uniform(size=20).reshape(-1, 1)
 zi = (xi ** 2).ravel()
 
+x_test = np.linspace(0, 10, 10000).reshape(-1, 1)
+
 grid = np.random.uniform(size=n_grid).reshape(-1, 1)
 
-algo = imse.IMSE(10, grid, input_box, n_particles, xi, zi, model)
+algo = imse.IMSE(1, grid, input_box, n_particles, xi, zi, model)
+
+criterion_values = algo.criterion(x_test)
+
+plt.figure()
+plt.plot(xi, zi, 'bo')
+plt.plot(x_test, criterion_values)
 
 algo.step()
+plt.plot(algo.xi[[-1], 0], algo.zi[[-1], 0], 'go')
+
+plt.show()
