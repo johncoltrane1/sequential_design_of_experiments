@@ -38,7 +38,7 @@ for _ in range(n_runs):
 
     plt.subplots(1, 2)
     plt.subplot(1, 2, 1)
-    plt.plot(xi, zi, 'bo')
+    plt.plot(algo.xi.ravel(), algo.zi.ravel(), 'bo')
 
     algo.step()
     plt.plot(algo.xi[[-1], 0], algo.zi[[-1], 0], 'go')
