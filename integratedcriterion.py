@@ -22,8 +22,8 @@ class IntegratedCriterion(SequentialPrediction):
         super().__init__(model=model)
 
         # initial design
-        self.xi = xi
-        self.zi = zi
+        self.xi = gnp.asarray(xi)
+        self.zi = gnp.asarray(zi).reshape(-1, 1)
 
         # estimate model parameters
         self.update_params()
@@ -60,20 +60,15 @@ class IntegratedCriterion(SequentialPrediction):
         return res
 
     def update_search_space(self):
-        method = self.options["smc_method"]
-
         target = self.get_target()
 
-        if method == "subset":
-            self.smc.subset(
-                func=self.boxify_criterion,
-                target=target,
-                p0=0.2,
-                xi=self.xi,
-                debug=False
-            )
-        else:
-            raise ValueError(method)
+        self.smc.subset(
+            func=self.boxify_criterion,
+            target=target,
+            p0=0.2,
+            xi=self.xi,
+            debug=False
+        )
 
     def set_initial_design(self, xi, update_model=True, update_search_space=True):
         raise NotImplemented
@@ -97,8 +92,7 @@ class IntegratedCriterion(SequentialPrediction):
 
         def crit_(x):
             x_row = x.reshape(1, -1)
-            criterion_value = self.criterion(x_row)
-            print(criterion_value.shape)
+            criterion_value = self.criterion(x_row)[0, 0]
             return - criterion_value
 
         crit_jit = gnp.jax.jit(crit_)
