@@ -49,7 +49,7 @@ for _ in range(n_runs):
 
     print("Size: ", algo.xi.shape[0])
 
-    plt.plot(algo.xi[[-num_new], 0], algo.zi[[-num_new], 0], 'go')
+    plt.plot(algo.xi[(-num_new):, 0], algo.zi[(-num_new):, 0], 'go')
 
     plt.subplot(1, 2, 2)
 
