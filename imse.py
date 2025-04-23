@@ -9,9 +9,8 @@ from integratedcriterion import IntegratedCriterion
 
 class IMSE(IntegratedCriterion):
 
-    def __init__(self, num_new, grid, *args, **kwargs):
+    def __init__(self, grid, *args, **kwargs):
         self.grid = grid
-        self.num_new = num_new
         super().__init__(*args, **kwargs)
 
     def build_criterion(self):
@@ -27,7 +26,7 @@ class IMSE(IntegratedCriterion):
 
             assert x.shape[0] % self.xi.shape[1] == 0
 
-            x_array = x.reshape(-1, self.xi.shape[1])
+            x_array = self.untile(x)#x.reshape(-1, self.xi.shape[1])
             z_array = gnp.zeros([x_array.shape[0], 1])
 
             xi_augmented = gnp.vstack((self.xi, x_array))

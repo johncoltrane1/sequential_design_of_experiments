@@ -11,6 +11,8 @@ assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".for
 
 input_box = [[0.0], [10.0]]
 
+num_new = 5
+
 n_grid = 500
 n_particles = 1000
 
@@ -31,7 +33,9 @@ x_test = np.linspace(0, 10, 10001).reshape(-1, 1)
 
 grid = np.linspace(0, 10, n_grid).reshape(-1, 1)
 
-algo = imse.IMSE(1, grid, input_box, n_particles, xi, zi, model)
+algo = imse.IMSE(grid, num_new, input_box, n_particles, xi, zi, model)
+
+print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
     criterion_values = - algo.criterion(x_test)
@@ -42,7 +46,10 @@ for _ in range(n_runs):
     plt.plot(algo.xi.ravel(), algo.zi.ravel(), 'bo')
 
     algo.step()
-    plt.plot(algo.xi[[-1], 0], algo.zi[[-1], 0], 'go')
+
+    print("Size: ", algo.xi.shape[0])
+
+    plt.plot(algo.xi[[-num_new], 0], algo.zi[[-num_new], 0], 'go')
 
     plt.subplot(1, 2, 2)
 
