@@ -72,11 +72,13 @@ class IntegratedCriterion(SequentialPrediction):
     def update_search_space(self):
         target = self.get_target()
 
+        tile_xi = self.xi.tile([1, self.num_new])
+
         self.smc.subset(
             func=self.boxify_criterion,
             target=target,
             p0=0.2,
-            xi=self.xi,
+            xi=tile_xi,
             debug=False
         )
 
