@@ -5,13 +5,14 @@ import matplotlib.pyplot as plt
 import gpmp as gp
 import gpmpcontrib as gpc
 import imse
+import sys
 
+
+num_new = sys.argv[1]
 
 assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".format(gp.num._gpmp_backend_)
 
 input_box = [[0.0], [10.0]]
-
-num_new = 5
 
 n_grid = 500
 n_particles = 1000
