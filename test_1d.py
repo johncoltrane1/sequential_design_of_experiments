@@ -8,7 +8,7 @@ import imse
 import sys
 
 
-num_new = sys.argv[1]
+num_new = int(sys.argv[1])
 
 assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".format(gp.num._gpmp_backend_)
 
