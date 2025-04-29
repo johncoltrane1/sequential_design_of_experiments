@@ -49,21 +49,6 @@ algo = imse.IMSE(grid, num_new, input_box, n_particles, xi, zi, model)
 print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
-    plt.subplots(2, 1)
-
-    plt.subplot(2, 1, 1)
-    plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
-
-    algo.step()
-
-    print("Size: ", algo.xi.shape[0])
-
-    print(algo.models)
-
-    plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
-
-    plt.subplot(2, 1, 2)
-
     #
     size_grid_contour_plot = 100
 
@@ -78,6 +63,22 @@ for _ in range(n_runs):
     for i in range(size_grid_contour_plot):
         for j in range(size_grid_contour_plot):
             output[i, j] = algo.criterion(np.array([grid_contour_plot_x[i, j], grid_contour_plot_y[i, j]]))
+
+    #
+    plt.subplots(2, 1)
+
+    plt.subplot(2, 1, 1)
+    plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
+
+    algo.step()
+
+    print("Size: ", algo.xi.shape[0])
+
+    print(algo.models)
+
+    plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
+
+    plt.subplot(2, 1, 2)
 
     plt.contour(grid_contour_plot_x, grid_contour_plot_y, output)
 
