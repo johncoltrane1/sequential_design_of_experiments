@@ -34,7 +34,7 @@ base_y = (input_box[1][1] - input_box[0][1]) * base + input_box[0][1]
 xx, yy = np.meshgrid(base_x, base_y)
 xi = np.hstack((xx.reshape(-1, 1),  yy.reshape(-1, 1)))
 
-zi = xi[:, 0] ** 2 + np.cos(5 * xi[:, 1])
+zi = xi[:, 0] ** 2 + 50 * np.cos(2 * xi[:, 1])
 
 x_test = np.random.uniform(size=(10001, 2))
 x_test[:, 0] = (input_box[1][0] - input_box[0][0]) * x_test[:, 0] + input_box[0][0]
@@ -49,13 +49,36 @@ algo = imse.IMSE(grid, num_new, input_box, n_particles, xi, zi, model)
 print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
-    plt.figure()
+    plt.subplots(2, 1)
+
+    plt.subplot(2, 1, 1)
     plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
 
     algo.step()
 
     print("Size: ", algo.xi.shape[0])
 
+    print(algo.models)
+
     plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
+
+    plt.subplot(2, 1, 2)
+
+    #
+    size_grid_contour_plot = 100
+
+    grid_contour_plot_base = np.linspace(0, 1, size_grid_contour_plot)
+    grid_contour_plot_base_x = (input_box[1][0] - input_box[0][0]) * grid_contour_plot_base + input_box[0][0]
+    grid_contour_plot_base_y = (input_box[1][1] - input_box[0][1]) * grid_contour_plot_base + input_box[0][1]
+
+    grid_contour_plot_x, grid_contour_plot_y = np.meshgrid(grid_contour_plot_base_x, grid_contour_plot_base_y)
+
+    output = np.zeros([size_grid_contour_plot, size_grid_contour_plot])
+
+    for i in range(size_grid_contour_plot):
+        for j in range(size_grid_contour_plot):
+            output[i, j] = algo.criterion(np.array([grid_contour_plot_x[i, j], grid_contour_plot_y[i, j]]))
+
+    plt.contour(grid_contour_plot_x, grid_contour_plot_y, output)
 
     plt.show()
