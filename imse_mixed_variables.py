@@ -10,7 +10,7 @@ import itertools
 from integratedcriterion import IntegratedCriterion
 
 
-class IMSE_MIXED_VARIABLE(IMSE):
+class IMSE_MIXED_VARIABLES(IMSE):
 
     def __init__(self, variables, n_particles, grid, xi, zi, model):
 

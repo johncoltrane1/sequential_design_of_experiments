@@ -4,7 +4,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import gpmp as gp
 import gpmpcontrib as gpc
-import imse_mixed_variable
+import imse_mixed_variables
 import sys
 
 
@@ -52,7 +52,7 @@ discete_grid = np.hstack((
 grid = np.hstack((continuous_grid[:, [0]], discete_grid[:, [0]], continuous_grid[:, [1]], discete_grid[:, [1]]))
 
 variables = [continuous_variables[0], discrete_variables[0], continuous_variables[1], discrete_variables[1]]
-algo = imse_mixed_variable.IMSE_MIXED_VARIABLE(variables, n_particles, grid, xi, zi, model)
+algo = imse_mixed_variables.IMSE_MIXED_VARIABLES(variables, n_particles, grid, xi, zi, model)
 
 print("Size: ", algo.xi.shape[0])
 
