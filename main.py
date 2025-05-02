@@ -14,7 +14,7 @@ assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".for
 
 # Options
 n_grid = 10000
-n_particles = 1000
+n_particles = 150
 
 n_runs = 10
 
