@@ -6,6 +6,7 @@ import gpmp as gp
 import gpmpcontrib as gpc
 import imse_mixed_variables
 import sys
+import itertools
 
 
 assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".format(gp.num._gpmp_backend_)
@@ -57,37 +58,50 @@ algo = imse_mixed_variables.IMSE_MIXED_VARIABLES(variables, n_particles, grid, x
 print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
-    # #
-    # size_grid_contour_plot = 100
-    #
-    # grid_contour_plot_base = np.linspace(0, 1, size_grid_contour_plot)
-    # grid_contour_plot_base_x = (input_box[1][0] - input_box[0][0]) * grid_contour_plot_base + input_box[0][0]
-    # grid_contour_plot_base_y = (input_box[1][1] - input_box[0][1]) * grid_contour_plot_base + input_box[0][1]
-    #
-    # grid_contour_plot_x, grid_contour_plot_y = np.meshgrid(grid_contour_plot_base_x, grid_contour_plot_base_y)
-    #
-    # output = np.zeros([size_grid_contour_plot, size_grid_contour_plot])
-    #
-    # for i in range(size_grid_contour_plot):
-    #     for j in range(size_grid_contour_plot):
-    #         output[i, j] = algo.criterion(np.array([grid_contour_plot_x[i, j], grid_contour_plot_y[i, j]]))
+    plt.subplots(2, 4)
 
-    #
-    plt.subplots(2, 1)
+    k_list = list(itertools.product(*[val[1] for val in algo.discrete_variables]))
+    cpt = 0
+    for k in k_list:
 
-    plt.subplot(2, 1, 1)
-    plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
+        ##
+        plt.subplot(2, 4, 2 * cpt + 1)
 
-    algo.step()
+        #
+        algo.criterion = algo.build_criterion(k)
 
-    print("Size: ", algo.xi.shape[0])
+        #
+        size_grid_contour_plot = 100
 
-    print(algo.models)
+        grid_contour_plot_base = np.linspace(0, 1, size_grid_contour_plot)
+        grid_contour_plot_base_x = (continuous_variables[0][1] - continuous_variables[0][0]) * grid_contour_plot_base + continuous_variables[0][0]
+        grid_contour_plot_base_y = (continuous_variables[1][1] - continuous_variables[1][0]) * grid_contour_plot_base + continuous_variables[1][0]
 
-    plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
+        grid_contour_plot_x, grid_contour_plot_y = np.meshgrid(grid_contour_plot_base_x, grid_contour_plot_base_y)
 
-    plt.subplot(2, 1, 2)
+        output = np.zeros([size_grid_contour_plot, size_grid_contour_plot])
 
-    # plt.contour(grid_contour_plot_x, grid_contour_plot_y, output)
+        for i in range(size_grid_contour_plot):
+            for j in range(size_grid_contour_plot):
+                output[i, j] = algo.criterion(np.array([grid_contour_plot_x[i, j], grid_contour_plot_y[i, j]]))
+
+        #
+        plt.contour(grid_contour_plot_x, grid_contour_plot_y, output)
+
+        ##
+        plt.subplot(2, 4, 2 * cpt + 2)
+
+        plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
+
+        algo.step()
+
+        print("Size: ", algo.xi.shape[0])
+
+        print(algo.models)
+
+        plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
+
+        ##
+        cpt += 1
 
     plt.show()
