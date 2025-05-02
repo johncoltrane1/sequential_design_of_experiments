@@ -59,7 +59,7 @@ print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
     ###
-    plt.subplots(2, 4)
+    plt.subplots(4, 2)
 
     ###
     k_list = list(itertools.product(*[val[1] for val in algo.discrete_variables]))
@@ -67,7 +67,7 @@ for _ in range(n_runs):
     for k in k_list:
 
         ##
-        plt.subplot(2, 4, 2 * cpt + 1)
+        plt.subplot(4, 2, 2 * cpt + 1)
 
         #
         algo.criterion = algo.build_criterion(k)
@@ -93,7 +93,7 @@ for _ in range(n_runs):
         plt.title("k = {}; max. crit. = {}".format(k, output.max()))
 
         ##
-        plt.subplot(2, 4, 2 * cpt + 2)
+        plt.subplot(4, 2, 2 * cpt + 2)
 
         #
         _xi = algo.xi.clone()
@@ -118,7 +118,7 @@ for _ in range(n_runs):
     for k in k_list:
 
         #
-        plt.subplot(2, 4, 2 * cpt + 2)
+        plt.subplot(4, 2, 2 * cpt + 2)
 
         #
         _xi = algo.xi[-num_new, :].clone()
