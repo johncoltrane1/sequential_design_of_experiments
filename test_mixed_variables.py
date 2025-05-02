@@ -103,6 +103,9 @@ for _ in range(n_runs):
         #
         plt.plot(_xi[:, 0], _xi[:, 2], 'bo')
 
+        # title
+        plt.title("k = {}".format(k))
+
         ##
         cpt += 1
 
