@@ -4,6 +4,7 @@ matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 import gpmp as gp
 import gpmpcontrib as gpc
+import gpmp.num as gnp
 import imse_mixed_variables
 import sys, os
 import json
@@ -76,11 +77,15 @@ grid = np.hstack(grid_list)
 
 algo = imse_mixed_variables.IMSE_MIXED_VARIABLES(variables, n_particles, grid, xi, zi, model)
 
+# Create dir
+os.mkdir(os.path.join(path, "results"))
+
 print("Size: ", algo.xi.shape[0])
 
-for _ in range(n_runs):
+for j in range(n_runs):
 
     ###
     algo.step()
 
     print("Size: ", algo.xi.shape[0])
+    np.save(os.path.join(path, "results", "xi_{}.npy".format(j)), gnp.to_numpy(algo.xi))
