@@ -5,12 +5,15 @@ import matplotlib.pyplot as plt
 import gpmp as gp
 import gpmpcontrib as gpc
 import imse_mixed_variables
-import sys
-import itertools
+import sys, os
 import json
 
 
 assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".format(gp.num._gpmp_backend_)
+
+
+path = sys.argv[1]
+
 
 # Options
 n_grid = 10000
@@ -21,7 +24,7 @@ n_runs = 10
 num_new = 1
 
 # Fetch variables
-with open("variables.json", "r") as f:
+with open(os.path.join(path, "variables.json"), "r") as f:
     _variables = json.load(f)
 
 variables = []
@@ -44,8 +47,8 @@ model = gpc.Model_ConstantMeanMaternpML(
 )
 
 # design
-xi = np.load("xi.npy")
-zi = np.load("zi.npy")
+xi = np.load(os.path.join(path, "xi.npy"))
+zi = np.load(os.path.join(path, "zi.npy"))
 
 for j in range(xi.shape[1]):
     for i in range(xi.shape[0]):
