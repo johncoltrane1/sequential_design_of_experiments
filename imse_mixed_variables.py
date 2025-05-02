@@ -130,7 +130,8 @@ class IMSE_MIXED_VARIABLES(IMSE):
             target=target,
             p0=0.2,
             xi=tile_xi,
-            debug=False
+            debug=False,
+            max_iter=8
         )
 
     def untile(self, x):
