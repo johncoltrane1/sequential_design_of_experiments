@@ -52,10 +52,10 @@ zi = np.load(os.path.join(path, "zi.npy"))
 
 for j in range(xi.shape[1]):
     for i in range(xi.shape[0]):
-        if isinstance(variables[i], tuple):
-            assert xi[i, j] in variables[i], (xi[i, j], variables[i])
-        elif isinstance(variables[i], list):
-            assert variables[i][0] <= xi[i, j] and xi[i, j] <= variables[i][1], (xi[i, j], variables[i])
+        if isinstance(variables[j], tuple):
+            assert xi[i, j] in variables[j], (xi[i, j], variables[j])
+        elif isinstance(variables[j], list):
+            assert variables[j][0] <= xi[i, j] and xi[i, j] <= variables[j][1], (xi[i, j], variables[j])
         else:
             raise ValueError("{}, {}, {}".format(i, j, xi[i, j]))
 
