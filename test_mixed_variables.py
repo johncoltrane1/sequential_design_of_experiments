@@ -58,8 +58,10 @@ algo = imse_mixed_variables.IMSE_MIXED_VARIABLES(variables, n_particles, grid, x
 print("Size: ", algo.xi.shape[0])
 
 for _ in range(n_runs):
+    ###
     plt.subplots(2, 4)
 
+    ###
     k_list = list(itertools.product(*[val[1] for val in algo.discrete_variables]))
     cpt = 0
     for k in k_list:
@@ -93,15 +95,23 @@ for _ in range(n_runs):
 
         plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
 
-        algo.step()
+        ##
+        cpt += 1
 
+    ###
+    algo.step()
+
+    ###
+    k_list = list(itertools.product(*[val[1] for val in algo.discrete_variables]))
+    cpt = 0
+    for k in k_list:
         print("Size: ", algo.xi.shape[0])
 
         print(algo.models)
 
         plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
 
-        ##
         cpt += 1
 
+    ###
     plt.show()
