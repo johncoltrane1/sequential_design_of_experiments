@@ -121,7 +121,7 @@ for _ in range(n_runs):
         plt.subplot(2, 4, 2 * cpt + 2)
 
         #
-        _xi = xi[-num_new, :].copy()
+        _xi = algo.xi[-num_new, :].copy()
         is_in_component = True
         for p, v in enumerate(algo.discrete_variables):
             if _xi[v[0]] != k[p]:
