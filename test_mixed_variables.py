@@ -101,7 +101,7 @@ for _ in range(n_runs):
             _xi = _xi[_xi[:, v[0]] == k[p], :]
 
         #
-        plt.plot(_xi[:, 0], _xi[:, 1], 'bo')
+        plt.plot(_xi[:, 0], _xi[:, 2], 'bo')
 
         ##
         cpt += 1
@@ -129,7 +129,7 @@ for _ in range(n_runs):
 
         #
         if is_in_component:
-            plt.plot(_xi[0], _xi[1], 'go')
+            plt.plot(_xi[0], _xi[2], 'go')
 
         #
         cpt += 1
