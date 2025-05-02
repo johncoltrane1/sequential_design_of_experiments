@@ -142,7 +142,8 @@ class IMSE_MIXED_VARIABLES(IMSE):
         k_list = list(itertools.product(*[val[1] for val in self.discrete_variables]))
         x_new_list = []
         scores_list = []
-        for k in k_list:
+        for idx_k, k in enumerate(k_list):
+            print("Running {}-th optim.".format(idx_k))
 
             # criterion
             self.criterion = self.build_criterion(k)
@@ -170,6 +171,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
             scores_list.append(criterion_x_new)
 
         # get best
+        print("Best score: ", max(scores_list))
         idx_max = np.array(scores_list).argmax()
         x_new = x_new_list[idx_max]
         k_new = k_list[idx_max]
