@@ -21,7 +21,7 @@ n_runs = 10
 num_new = 1
 
 # Fetch variables
-with open("test.json", "r") as f:
+with open("variables.json", "r") as f:
     _variables = json.load(f)
 
 variables = []
