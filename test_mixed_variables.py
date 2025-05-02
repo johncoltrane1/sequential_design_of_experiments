@@ -90,6 +90,8 @@ for _ in range(n_runs):
         #
         plt.contour(grid_contour_plot_x, grid_contour_plot_y, output)
 
+        plt.title("k = {}; max. crit. = {}".format(k, output.max()))
+
         ##
         plt.subplot(2, 4, 2 * cpt + 2)
 
@@ -107,16 +109,29 @@ for _ in range(n_runs):
     ###
     algo.step()
 
+    print("Size: ", algo.xi.shape[0])
+    print(algo.models)
+
     ###
     k_list = list(itertools.product(*[val[1] for val in algo.discrete_variables]))
     cpt = 0
     for k in k_list:
-        print("Size: ", algo.xi.shape[0])
 
-        print(algo.models)
+        #
+        plt.subplot(2, 4, 2 * cpt + 2)
 
-        plt.plot(algo.xi[(-num_new):, 0], algo.xi[(-num_new):, 1], 'go')
+        #
+        _xi = xi[-num_new, :].copy()
+        is_in_component = True
+        for p, v in enumerate(algo.discrete_variables):
+            if _xi[v[0]] != k[p]:
+                is_in_component = False
 
+        #
+        if is_in_component:
+            plt.plot(_xi[0], _xi[1], 'go')
+
+        #
         cpt += 1
 
     ###
