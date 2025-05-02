@@ -55,9 +55,9 @@ class IMSE_MIXED_VARIABLES(IMSE):
         assert 1 <= _x.ndim <= 2
 
         if _x.ndim == 1:
-            x = np.zeros([self.xi.shape[1]])
+            x = gnp.zeros([self.xi.shape[1]])
         else:
-            x = np.zeros([_x.shape[0], self.xi.shape[1]])
+            x = gnp.zeros([_x.shape[0], self.xi.shape[1]])
 
         for i in range(self.xi.shape[1]):
             # FIXME:() Optimize
@@ -87,12 +87,14 @@ class IMSE_MIXED_VARIABLES(IMSE):
         return x
 
     def build_criterion(self, k):
+        k = gnp.asarray(k)
+
         def criterion(_x):
             assert 1 <= _x.ndim <= 2
 
-            x = self.complete(_x, k)
+            _x = gnp.asarray(_x)
 
-            x = gnp.asarray(x)
+            x = self.complete(_x, k)
 
             if x.ndim == 2:
                 res = []
@@ -172,6 +174,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
         k_new = k_list[idx_min]
 
         x_new = self.complete(x_new, k_new)
+        x_new = x_new.reshape(1, -1)
 
         # store
         self.make_new_eval(x_new)
