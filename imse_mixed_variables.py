@@ -169,9 +169,9 @@ class IMSE_MIXED_VARIABLES(IMSE):
             scores_list.append(criterion_x_new)
 
         # get best
-        idx_min = np.array(scores_list).argmin()
-        x_new = x_new_list[idx_min]
-        k_new = k_list[idx_min]
+        idx_max = np.array(scores_list).argmax()
+        x_new = x_new_list[idx_max]
+        k_new = k_list[idx_max]
 
         x_new = self.complete(x_new, k_new)
         x_new = x_new.reshape(1, -1)
