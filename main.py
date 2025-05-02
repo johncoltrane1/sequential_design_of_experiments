@@ -14,13 +14,12 @@ assert gp.num._gpmp_backend_ == "torch", "{} is used, please install Torch.".for
 
 
 path = sys.argv[1]
+n_runs = int(sys.argv[2])
 
 
 # Options
 n_grid = 1000
 n_particles = 150
-
-n_runs = 10
 
 num_new = 1
 
