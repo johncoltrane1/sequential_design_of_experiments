@@ -47,6 +47,15 @@ model = gpc.Model_ConstantMeanMaternpML(
 xi = np.load("xi.npy")
 zi = np.load("zi.npy")
 
+for j in range(xi.shape[1]):
+    for i in range(xi.shape[0]):
+        if isinstance(variables[i], tuple):
+            assert xi[i, j] in variables[i]
+        elif isinstance(variables[i], list):
+            assert variables[i][0] <= xi[i, j] and xi[i, j] <= variables[i][1]
+        else:
+            raise ValueError("{}, {}, {}".format(i, j, xi[i, j]))
+
 # grid
 grid_list = []
 
