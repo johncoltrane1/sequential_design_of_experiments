@@ -88,4 +88,4 @@ for j in range(n_runs):
     algo.step()
 
     print("Size: ", algo.xi.shape[0])
-    np.save(os.path.join(path, "results", "xi_{}.npy".format(j)), gnp.to_numpy(algo.xi))
+    np.save(os.path.join(path, "results", "xi_{}.npy".format(j)), gnp.to_np(algo.xi))
