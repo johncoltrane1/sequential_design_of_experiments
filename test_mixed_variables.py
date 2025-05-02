@@ -93,7 +93,13 @@ for _ in range(n_runs):
         ##
         plt.subplot(2, 4, 2 * cpt + 2)
 
-        plt.plot(algo.xi[:, 0], algo.xi[:, 1], 'bo')
+        #
+        _xi = algo.xi.clone()
+        for p, v in enumerate(algo.discrete_variables):
+            _xi = _xi[_xi[:, v[0]] == k[p], :]
+
+        #
+        plt.plot(_xi[:, 0], _xi[:, 1], 'bo')
 
         ##
         cpt += 1
