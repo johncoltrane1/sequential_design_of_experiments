@@ -121,15 +121,10 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
         continuous_variables_indexes = [val[0] for val in self.continuous_variables]
 
-        xi = self.xi[:, continuous_variables_indexes]
-
-        tile_xi = xi.tile([1, self.num_new])
-
         self.smc.subset(
             func=self.boxify_criterion,
             target=target,
             p0=0.2,
-            xi=tile_xi,
             debug=False,
             max_iter=8
         )
