@@ -161,6 +161,8 @@ class IMSE_MIXED_VARIABLES(IMSE):
             # criterion vaue
             criterion_x_new = self.criterion(x_new)
 
+            print("Value found {}".format(float(criterion_x_new)))
+
             # store
             x_new_list.append(x_new)
             scores_list.append(criterion_x_new)
