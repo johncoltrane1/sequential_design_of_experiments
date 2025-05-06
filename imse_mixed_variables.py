@@ -116,17 +116,18 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
         return criterion
 
+    def get_target(self):
+        return np.inf
+
     def update_search_space(self):
         target = self.get_target()
-
-        continuous_variables_indexes = [val[0] for val in self.continuous_variables]
 
         self.smc.subset(
             func=self.boxify_criterion,
             target=target,
             p0=0.2,
             debug=False,
-            max_iter=8
+            max_iter=3
         )
 
     def untile(self, x):
