@@ -92,15 +92,15 @@ class IMSE_MIXED_VARIABLES(IMSE):
         def criterion(_x):
             assert 1 <= _x.ndim <= 2
 
+            if _x.ndim == 2:
+                res = []
+                for i in range(_x.shape[0]):
+                    res.append(criterion(_x[i, :]))
+                return gnp.vstack(res)
+
             _x = gnp.asarray(_x)
 
             x = self.complete(_x, k)
-
-            if x.ndim == 2:
-                res = []
-                for i in range(x.shape[0]):
-                    res.append(criterion(x[i, :]))
-                return gnp.vstack(res)
 
             assert x.shape[0] % self.xi.shape[1] == 0
 
