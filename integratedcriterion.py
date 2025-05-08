@@ -132,6 +132,8 @@ class IntegratedCriterion(SequentialPrediction):
             init, crit_jit, dcrit, bounds=bounds
         )
 
+        print("Argmin: ", criterion_argmin)
+
         if gnp.numpy.isnan(criterion_argmin).any():
             return init
 
@@ -144,7 +146,7 @@ class IntegratedCriterion(SequentialPrediction):
         if crit_(criterion_argmin) < crit_(init):
             output = criterion_argmin
         else:
-            output = init
+            output = criterion_argmin
 
         return gnp.asarray(output)
 

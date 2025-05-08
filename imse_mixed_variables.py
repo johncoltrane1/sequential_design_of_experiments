@@ -8,6 +8,9 @@ import gpmp.num as gnp
 from imse import IMSE
 import itertools
 from integratedcriterion import IntegratedCriterion
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
 
 class IMSE_MIXED_VARIABLES(IMSE):
@@ -54,6 +57,8 @@ class IMSE_MIXED_VARIABLES(IMSE):
     def complete(self, _x, k):
         assert 1 <= _x.ndim <= 2
 
+        print([val[0] for val in self.continuous_variables])
+
         if _x.ndim == 1:
             x = gnp.zeros([self.xi.shape[1]])
         else:
@@ -76,6 +81,10 @@ class IMSE_MIXED_VARIABLES(IMSE):
             elif i in continuous_variables_indexes:
                 idx = continuous_variables_indexes.index(i)
 
+                print("Complete ", i, idx)
+                print(x)
+                print(_x)
+
                 if x.ndim == 1:
                     x[i] = _x[idx]
                 else:
@@ -90,17 +99,23 @@ class IMSE_MIXED_VARIABLES(IMSE):
         k = gnp.asarray(k)
 
         def criterion(_x):
+            print("\n\n\n\nCriterion computation")
+            print("input: {}".format(_x))
             assert 1 <= _x.ndim <= 2
+
+            if _x.ndim == 2:
+                res = []
+                for i in range(_x.shape[0]):
+                    res.append(criterion(_x[i, :]))
+                    print("Res: ", res[-1])
+                return gnp.vstack(res)
 
             _x = gnp.asarray(_x)
 
+            print("Before: {}".format(_x))
             x = self.complete(_x, k)
 
-            if x.ndim == 2:
-                res = []
-                for i in range(x.shape[0]):
-                    res.append(criterion(x[i, :]))
-                return gnp.vstack(res)
+            print("Completed x: {}".format(x))
 
             assert x.shape[0] % self.xi.shape[1] == 0
 
@@ -112,6 +127,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             _, zpv = self.model.predict(xi_augmented, zi_augmented, self.grid, convert_out=False)
             value = - zpv.mean()
+            print("Numerical value: ", value)
             return value
 
         return criterion
@@ -135,6 +151,8 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
     def step(self):
 
+        continuous_variables_indexes = [val[0] for val in self.continuous_variables]
+
         k_list = list(itertools.product(*[val[1] for val in self.discrete_variables]))
         x_new_list = []
         scores_list = []
@@ -146,18 +164,72 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             # run smc
             self.init_smc()
+
+            #
+
+            plt.subplots(1, 2)
+
+            plt.subplot(1, 2, 1)
+
+            # plt.plot(self.smc.particles.x[:, 0], self.smc.particles.x[:, 1], 'bo', alpha=0.2, label="init part")
+
+            input_box = self.input_box
+            size_grid_contour_plot = 100
+
+            grid_contour_plot_base = np.linspace(0, 1, size_grid_contour_plot)
+            grid_contour_plot_base_x = (input_box[1][0] - input_box[0][0]) * grid_contour_plot_base + input_box[0][0]
+            grid_contour_plot_base_y = (input_box[1][1] - input_box[0][1]) * grid_contour_plot_base + input_box[0][1]
+
+            grid_contour_plot_x, grid_contour_plot_y = np.meshgrid(grid_contour_plot_base_x, grid_contour_plot_base_y)
+
+            output = np.zeros([size_grid_contour_plot, size_grid_contour_plot])
+
+            for i in range(size_grid_contour_plot):
+                for j in range(size_grid_contour_plot):
+                    output[i, j] = self.criterion(np.array([grid_contour_plot_x[i, j], grid_contour_plot_y[i, j]]))
+
+            plt.contour(grid_contour_plot_x, grid_contour_plot_y, output,
+                        levels=np.linspace(output.min(), output.max(), 1000))
+
+            print("Grid: [{}, {}] ({})".format(output.min(), output.max(), output.max() - output.min()))
+
+            #
+
             self.update_search_space()
 
             # evaluate the criterion on the search space
             self.criterion_values = self.criterion(self.smc.particles.x)
 
+            plt.subplot(1, 2, 2)
+
+
+            seb = - self.criterion_values
+            # seb = 100 * (seb - seb.min()) / (seb.max() - seb.min())
+
+            print("Crit part var:", self.criterion_values.var())
+
+            plt.scatter(self.smc.particles.x[:, 0], self.smc.particles.x[:, 1], c=seb, label="after part")
+
             assert not gnp.isnan(self.criterion_values).any()
 
             # make new evaluation
+            print("Criterion value: {} : {} ({})".format(self.criterion_values.min(),
+                self.criterion_values.max(), self.criterion_values.max() - self.criterion_values.min()))
             x_new = self.smc.particles.x[gnp.argmax(gnp.asarray(self.criterion_values))].reshape(1, -1)
 
+            plt.plot(x_new[0, [0]], x_new[0, [1]], 'ro')
+
             # improve with local optimizer
+
+            print("Before local opt: ", x_new, self.criterion(x_new))
+
             x_new = self.local_criterion_opt(gnp.to_np(x_new).ravel())
+
+            print("After local opt: ", x_new, self.criterion(x_new))
+
+            plt.plot(x_new[[0]], x_new[[1]], 'go', markersize=5)
+
+            plt.show()
 
             # criterion vaue
             criterion_x_new = self.criterion(x_new)

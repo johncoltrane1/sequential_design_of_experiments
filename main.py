@@ -77,7 +77,7 @@ grid = np.hstack(grid_list)
 algo = imse_mixed_variables.IMSE_MIXED_VARIABLES(variables, n_particles, grid, xi, zi, model)
 
 # Create dir
-os.mkdir(os.path.join(path, "results"))
+# os.mkdir(os.path.join(path, "results"))
 
 print("Size: ", algo.xi.shape[0])
 
@@ -87,4 +87,4 @@ for j in range(n_runs):
     algo.step()
 
     print("Size: ", algo.xi.shape[0])
-    np.save(os.path.join(path, "results", "xi_{}.npy".format(j)), gnp.to_np(algo.xi))
+    # np.save(os.path.join(path, "results", "xi_{}.npy".format(j)), gnp.to_np(algo.xi))
