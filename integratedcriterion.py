@@ -129,7 +129,7 @@ class IntegratedCriterion(SequentialPrediction):
 
         bounds = [tuple(box[i][k] for i in range(len(box))) for k in range(len(box[0]))]
         criterion_argmin = gp.kernel.autoselect_parameters(
-            init, crit_jit, dcrit, bounds=bounds
+            init, crit_jit, dcrit, bounds=bounds, method="L-BFGS-B"
         )
 
         if gnp.numpy.isnan(criterion_argmin).any():
