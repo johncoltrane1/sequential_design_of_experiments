@@ -107,7 +107,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
                 res = []
                 for i in range(_x.shape[0]):
                     res.append(criterion(_x[i, :]))
-                    print("Res: ", res[-1])
+
                 return gnp.vstack(res)
 
             _x = gnp.asarray(_x)
