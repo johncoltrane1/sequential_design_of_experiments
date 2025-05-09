@@ -146,7 +146,7 @@ class IntegratedCriterion(SequentialPrediction):
         if crit_(criterion_argmin) < crit_(init):
             output = criterion_argmin
         else:
-            output = criterion_argmin
+            output = init
 
         return gnp.asarray(output)
 
