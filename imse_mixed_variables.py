@@ -167,9 +167,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             #
 
-            plt.subplots(1, 2)
-
-            plt.subplot(1, 2, 1)
+            plt.figure()
 
             # plt.plot(self.smc.particles.x[:, 0], self.smc.particles.x[:, 1], 'bo', alpha=0.2, label="init part")
 
@@ -200,11 +198,9 @@ class IMSE_MIXED_VARIABLES(IMSE):
             # evaluate the criterion on the search space
             self.criterion_values = self.criterion(self.smc.particles.x)
 
-            plt.subplot(1, 2, 2)
-
 
             seb = - self.criterion_values
-            # seb = 100 * (seb - seb.min()) / (seb.max() - seb.min())
+            seb = 100 * (seb - seb.min()) / (seb.max() - seb.min())
 
             print("Crit part var:", self.criterion_values.var())
 
@@ -228,7 +224,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             print("After local opt: ", x_new, self.criterion(x_new))
 
-            plt.plot(x_new[[0]], x_new[[1]], 'go', markersize=5)
+            plt.plot(x_new[[0]], x_new[[1]], 'rx', markersize=5)
 
             plt.show()
 
