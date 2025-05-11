@@ -224,7 +224,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             print("After local opt: ", x_new, self.criterion(x_new))
 
-            plt.plot(x_new[[0]], x_new[[1]], 'rx', markersize=5)
+            plt.plot(x_new[[0]], x_new[[1]], 'rx', markersize=15)
 
             plt.show()
 
