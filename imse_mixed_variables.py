@@ -216,6 +216,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
             print("Criterion value: {} : {} ({})".format(self.criterion_values.min(),
                 self.criterion_values.max(), self.criterion_values.max() - self.criterion_values.min()))
             x_new = self.smc.particles.x[gnp.argmax(gnp.asarray(self.criterion_values))].reshape(1, -1)
+            print("Best value after SMC: {}".format(float(self.criterion(x_new))))
 
             plt.plot(x_new[0, [0]], x_new[0, [1]], 'ro')
 
@@ -234,14 +235,14 @@ class IMSE_MIXED_VARIABLES(IMSE):
             # criterion vaue
             criterion_x_new = self.criterion(x_new)
 
-            print("Value found {}".format(float(criterion_x_new)))
+            print("Value found after optim: {}".format(float(criterion_x_new)))
 
             # store
             x_new_list.append(x_new)
             scores_list.append(criterion_x_new)
 
         # get best
-        print("Best score: ", max(scores_list))
+        print("Best score: ", float(max(scores_list)))
         idx_max = np.array(scores_list).argmax()
         x_new = x_new_list[idx_max]
         k_new = k_list[idx_max]
