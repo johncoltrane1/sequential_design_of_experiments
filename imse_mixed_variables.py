@@ -155,6 +155,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             # make new evaluation
             x_new = self.smc.particles.x[gnp.argmax(gnp.asarray(self.criterion_values))].reshape(1, -1)
+            print("Best value after SMC: {}".format(float(self.criterion(x_new))))
 
             # improve with local optimizer
             x_new = self.local_criterion_opt(gnp.to_np(x_new).ravel())
@@ -162,7 +163,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
             # criterion vaue
             criterion_x_new = self.criterion(x_new)
 
-            print("Value found {}".format(float(criterion_x_new)))
+            print("Value found after optim: {}".format(float(criterion_x_new)))
 
             # store
             x_new_list.append(x_new)
