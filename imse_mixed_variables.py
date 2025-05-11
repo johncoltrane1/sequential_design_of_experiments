@@ -169,7 +169,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
             scores_list.append(criterion_x_new)
 
         # get best
-        print("Best score: ", max(scores_list))
+        print("Best score: ", float(max(scores_list)))
         idx_max = np.array(scores_list).argmax()
         x_new = x_new_list[idx_max]
         k_new = k_list[idx_max]
