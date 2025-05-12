@@ -18,7 +18,7 @@ n_runs = int(sys.argv[2])
 
 
 # Options
-n_grid = 2000
+n_grid = 1000
 n_particles = 100
 
 num_new = 1
