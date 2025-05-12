@@ -63,9 +63,9 @@ for j in range(xi.shape[1]):
 grid_list = []
 
 for variable in variables:
-    if isinstance(variable, list):
+    if isinstance(variable, tuple):
         _grid = (variable[1] - variable[0]) * np.random.uniform(size=n_grid) + variable[0]
-    elif isinstance(variable, tuple):
+    elif isinstance(variable, list):
         _grid = np.random.choice(variable, size=n_grid)
     else:
         raise ValueError(variable)
