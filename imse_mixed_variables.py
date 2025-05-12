@@ -204,7 +204,7 @@ class IMSE_MIXED_VARIABLES(IMSE):
 
             print("Crit part var:", self.criterion_values.var())
 
-            plt.scatter(self.smc.particles.x[:, 0], self.smc.particles.x[:, 1], c=seb, label="after part")
+            plt.plot(self.smc.particles.x[:, 0], self.smc.particles.x[:, 1], "bo", label="after part")
 
             assert not gnp.isnan(self.criterion_values).any()
 
